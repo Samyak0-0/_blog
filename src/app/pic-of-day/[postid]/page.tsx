@@ -4,26 +4,38 @@ import React, { useState, useEffect } from "react";
 import AddDailySnippet from "@/components/adddailysnippet";
 import InstagramFetch from "@/components/instagramfetch";
 import { useParams, useRouter } from "next/navigation";
+import { Calendar } from "@/components/ui/calendar";
 
 const Page = () => {
+  const currentDate = new Date();
+  const [date, setDate] = React.useState<Date | undefined>(new Date());
   const [isAdding, setIsAdding] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
+  
+
+  const getDaysDifference = () => {
+    if (!date) return 0;
+    const diffInMs = Math.abs(date.getTime() - currentDate.getTime());
+    return Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  };
+
+  console.log(getDaysDifference())
 
   useEffect(() => {
     // Check if page has already been reloaded
-    const hasReloaded = sessionStorage.getItem('pageReloaded')
-    
+    const hasReloaded = sessionStorage.getItem("pageReloaded");
+
     if (!hasReloaded) {
       // Mark as reloaded before reloading
-      sessionStorage.setItem('pageReloaded', 'true')
-      window.location.reload()
+      sessionStorage.setItem("pageReloaded", "true");
+      window.location.reload();
     }
-    
+
     // Cleanup function to remove flag when component unmounts
     return () => {
-      sessionStorage.removeItem('pageReloaded')
-    }
-  }, [])
+      sessionStorage.removeItem("pageReloaded");
+    };
+  }, []);
 
   // const [postId, setPostID] = useState("DKH6-sxBx0L");
   const params = useParams();
@@ -55,6 +67,12 @@ const Page = () => {
             <span className="text-xl">+</span>
             <span>Change Post</span>
           </button>
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={setDate}
+            className="rounded-md border"
+          />
         </div>
       )}
       <InstagramFetch postId={postId} />
