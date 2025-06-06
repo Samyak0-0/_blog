@@ -11,7 +11,6 @@ const Page = () => {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
   const [isAdding, setIsAdding] = useState(false);
   const router = useRouter();
-  
 
   const getDaysDifference = () => {
     if (!date) return 0;
@@ -19,7 +18,7 @@ const Page = () => {
     return Math.floor(diffInMs / (1000 * 60 * 60 * 24));
   };
 
-  console.log(getDaysDifference())
+  console.log(getDaysDifference());
 
   useEffect(() => {
     // Check if page has already been reloaded
@@ -38,8 +37,23 @@ const Page = () => {
   }, []);
 
   // const [postId, setPostID] = useState("DKH6-sxBx0L");
-  const params = useParams();
-  const [postId] = useState(params.postid as string);
+  // const params = useParams();
+  // const [postId] = useState(params.postid as string);
+
+  const [postId, setPostID] = useState([
+    "DKH6-sxBx0L",
+    "DKKlmCKoKDZ",
+    "DKNIceMo3FP",
+    "DKPq6FII-pM",
+    "DKSVgLWIiL0",
+    "DKUxxlJIuT4",
+    "DKXfbGQBKa3",
+    "DKaErB3hzpr",
+    "DKcoyYyhyic",
+    "DKdrxrlqr8a",
+    "DKfK-PehHCM",
+    "DKh0GwAhMwP",
+  ]);
 
   return (
     <div>
@@ -75,7 +89,11 @@ const Page = () => {
           />
         </div>
       )}
-      <InstagramFetch postId={postId} />
+      <div>
+        {postId.map((post) => {
+          return <InstagramFetch postId={post} />;
+        })}
+      </div>
     </div>
   );
 };
