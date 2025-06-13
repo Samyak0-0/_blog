@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import AddDailySnippet from "@/components/adddailysnippet";
-import InstagramFetch from "@/components/instagramfetch";
+import InstagramFetch from "@/components/test";
 import { useParams, useRouter } from "next/navigation";
 import { Calendar } from "@/components/ui/calendar";
 
@@ -41,18 +41,19 @@ const Page = () => {
   // const [postId] = useState(params.postid as string);
 
   const [postId, setPostID] = useState([
-    "DKH6-sxBx0L",
-    "DKKlmCKoKDZ",
-    "DKNIceMo3FP",
-    "DKPq6FII-pM",
-    "DKSVgLWIiL0",
-    "DKUxxlJIuT4",
-    "DKXfbGQBKa3",
-    "DKaErB3hzpr",
-    "DKcoyYyhyic",
-    "DKdrxrlqr8a",
+    // "DKH6-sxBx0L",
+    // "DKKlmCKoKDZ",
+    // "DKNIceMo3FP",
+    // "DKPq6FII-pM",
+    // "DKSVgLWIiL0",
+    // "DKUxxlJIuT4",
+    // "DKXfbGQBKa3",
+    // "DKaErB3hzpr",
+    // "DKcoyYyhyic",
+    // "DKdrxrlqr8a",
     "DKfK-PehHCM",
-    "DKh0GwAhMwP",
+    "DKz2c43IMVe",
+    // "DKh0GwAhMwP",
   ]);
 
   return (
@@ -90,8 +91,8 @@ const Page = () => {
         </div>
       )}
       <div>
-        {postId.map((post) => {
-          return <InstagramFetch postId={post} />;
+        {postId.map((post, index) => {
+          return <InstagramFetch postId={post} key={index} />;
         })}
       </div>
     </div>
