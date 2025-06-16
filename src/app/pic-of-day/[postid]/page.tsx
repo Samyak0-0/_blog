@@ -40,21 +40,23 @@ const Page = () => {
   // const params = useParams();
   // const [postId] = useState(params.postid as string);
 
-  const [postId, setPostID] = useState([
-    // "DKH6-sxBx0L",
-    // "DKKlmCKoKDZ",
-    // "DKNIceMo3FP",
-    // "DKPq6FII-pM",
-    // "DKSVgLWIiL0",
-    // "DKUxxlJIuT4",
-    // "DKXfbGQBKa3",
-    // "DKaErB3hzpr",
-    // "DKcoyYyhyic",
-    // "DKdrxrlqr8a",
-    "DKfK-PehHCM",
-    "DKz2c43IMVe",
-    // "DKh0GwAhMwP",
-  ]);
+  const [postId, setPostID] = useState([]);
+
+  useEffect(() => {
+    fetch("/database.csv")
+      .then((res) => res.text())
+      .then((text) => {
+        // Trim, split by newline, and filter out empty lines
+        const ids = text
+          .trim()
+          .split("\n")
+          .map((line) => line.trim())
+          .filter(Boolean);
+        if (ids) {
+          setPostID(ids);
+        } // removes any blank lines
+      });
+  }, []);
 
   return (
     <div>
