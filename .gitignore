@@ -40,5 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-extract-insta-posts.csv
-database.csv
+data_mgmt/extract-insta-posts.csv
+public/database.csv
