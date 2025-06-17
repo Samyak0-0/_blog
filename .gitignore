@@ -40,5 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/python
-
+extract-insta-posts.csv
+database.csv
