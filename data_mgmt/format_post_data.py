@@ -1,10 +1,11 @@
 import csv
 import re
 import datetime
+import os
 
 results = [] 
 
-with open("extract-insta-posts.csv", mode="r") as file:
+with open("D:\DOWNLOADS\extract-insta-posts.csv", mode="r") as file:
     csv_data = csv.reader(file)
     now = datetime.date.today()
 
@@ -26,6 +27,14 @@ with open("extract-insta-posts.csv", mode="r") as file:
 
 fileData = []
 prev_date = None
+
+try:
+    os.remove("D:\DOWNLOADS\extract-insta-posts.csv")
+except FileNotFoundError:
+    print("File D:\\DOWNLOADS\\extract-insta-posts.csv not found for deletion.")
+except Exception as e:
+    print(f"Error deleting file: {e}")
+
     
 with open("../public/database.csv", mode='r') as file:
     
@@ -65,4 +74,6 @@ with open("../public/database.csv", mode='w') as file:
 
     for row in fileData:
         file.write(f"{row[0]},{row[1]}\n")
+
+    print("completed")
     

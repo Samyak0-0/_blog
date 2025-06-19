@@ -7,20 +7,40 @@ import { useParams, useRouter } from "next/navigation";
 import { Calendar } from "@/components/ui/calendar";
 
 const Page = () => {
+
   const currentDate = new Date();
+
   const [date, setDate] = React.useState<Date | undefined>(new Date());
+  
+  const [month, setMonth] = useState<number|undefined>(currentDate.getMonth()+1)
+  // const [month, setMonth] = useState<number|undefined>(JSON.parse(localStorage.getItem("month")) || currentDate.getMonth()+1)
+  
+  // const [year, setYear] = useState<number|undefined>(currentDate.getFullYear())
   const [isAdding, setIsAdding] = useState(false);
   const router = useRouter();
 
-  const getDaysDifference = () => {
-    if (!date) return 0;
-    const diffInMs = Math.abs(date.getTime() - currentDate.getTime());
-    return Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-  };
-
-  console.log(getDaysDifference());
+  useEffect(() => {
+    const formattedDate = date?.toISOString().slice(0, 10);
+    setMonth(date?.getMonth()+1)
+    // setYear(date?.getFullYear())
+    console.log(formattedDate, month)
+  }, [date])
 
   useEffect(() => {
+    console.log("month: ",month)
+  }, [month])
+
+  // const getDaysDifference = () => {
+  //   if (!date) return 0;
+  //   const diffInMs = Math.abs(date.getTime() - currentDate.getTime());
+  //   return Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  // };
+
+  console.log(date);
+
+  useEffect(() => {
+
+    localStorage.setItem("month", JSON.stringify(month))
     // Check if page has already been reloaded
     const hasReloaded = sessionStorage.getItem("pageReloaded");
 
@@ -34,7 +54,7 @@ const Page = () => {
     return () => {
       sessionStorage.removeItem("pageReloaded");
     };
-  }, []);
+  }, [month]);
 
   // const [postId, setPostID] = useState("DKH6-sxBx0L");
   // const params = useParams();
@@ -47,14 +67,18 @@ const Page = () => {
       .then((res) => res.text())
       .then((text) => {
         // Trim, split by newline, and filter out empty lines
-        const ids = text
+        const buffer = text
           .trim()
           .split("\n")
           .map((line) => line.trim())
           .filter(Boolean);
-        if (ids) {
-          setPostID(ids);
-        } // removes any blank lines
+        
+        const data = buffer.map((e) => 
+          e.split(","))
+        // const ids = data.map((row) => row[0]);
+        setPostID(data);
+
+        console.log(data)
       });
   }, []);
 
@@ -92,9 +116,9 @@ const Page = () => {
           />
         </div>
       )}
-      <div>
+      <div className="grid grid-cols-4 gap-0">
         {postId.map((post, index) => {
-          return <InstagramFetch postId={post} key={index} />;
+          return (post[1].split("-")[1] == month)? <div className="bg-red-200 border-2 border-s-orange-200"><InstagramFetch postId={post[0]} key={index} fullDate={post[1]} /></div>: null;
         })}
       </div>
     </div>
