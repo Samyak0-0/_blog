@@ -8,11 +8,15 @@ import { Calendar } from "@/components/ui/calendar";
 
 const Page = () => {
 
-  const currentDate = new Date();
+  
 
   const [date, setDate] = React.useState<Date | undefined>(new Date());
+  // const [monthTracker, setMonthTracker] = useState<number | undefined>(date?.getMonth() + 1);
+  const params = useParams();
+  // console.log(params.month)
   
-  const [month, setMonth] = useState<number|undefined>(currentDate.getMonth()+1)
+  const month = JSON.parse(params.month);
+  console.log(typeof(month))
   // const [month, setMonth] = useState<number|undefined>(JSON.parse(localStorage.getItem("month")) || currentDate.getMonth()+1)
   
   // const [year, setYear] = useState<number|undefined>(currentDate.getFullYear())
@@ -21,14 +25,13 @@ const Page = () => {
 
   useEffect(() => {
     const formattedDate = date?.toISOString().slice(0, 10);
-    setMonth(date?.getMonth()+1)
+    router.push(`/pic-of-day/${date?.getMonth()+1}`)
+    // setMonth(date?.getMonth()+1)
     // setYear(date?.getFullYear())
     console.log(formattedDate, month)
-  }, [date])
-
-  useEffect(() => {
-    console.log("month: ",month)
   }, [month])
+
+
 
   // const getDaysDifference = () => {
   //   if (!date) return 0;
@@ -40,7 +43,6 @@ const Page = () => {
 
   useEffect(() => {
 
-    localStorage.setItem("month", JSON.stringify(month))
     // Check if page has already been reloaded
     const hasReloaded = sessionStorage.getItem("pageReloaded");
 
@@ -54,7 +56,7 @@ const Page = () => {
     return () => {
       sessionStorage.removeItem("pageReloaded");
     };
-  }, [month]);
+  }, []);
 
   // const [postId, setPostID] = useState("DKH6-sxBx0L");
   // const params = useParams();
