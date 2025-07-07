@@ -5,6 +5,7 @@ import AddDailySnippet from "@/components/adddailysnippet";
 import InstagramFetch from "@/components/test";
 import { useParams, useRouter } from "next/navigation";
 import { Calendar } from "@/components/ui/calendar";
+import InstagramFetchPics from "@/components/instagramfetchpics";
 
 const Page = () => {
   const params = useParams();
@@ -99,11 +100,15 @@ const Page = () => {
           />
         </div>
       )}
-      <div className="grid grid-cols-4 gap-0">
+      <div className="grid grid-cols-3 gap-0">
         {postId.map((post, index) => {
           return post[1].split("-")[1] == selectedDate.getMonth() + 1 ? (
-            <div className="bg-red-200 border-2 border-s-orange-200">
-              <InstagramFetch postId={post[0]} key={index} fullDate={post[1]} />
+            <div
+              className=""
+              key={index}
+            >
+              {/* <InstagramFetch postId={post[0]} key={index} /> */}
+              <InstagramFetchPics postId={post[0]} key={index} />
             </div>
           ) : null;
         })}

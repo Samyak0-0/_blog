@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
-const InstagramFetch = ({ postId, fullDate }: { postId: string, fullDate: string }) => {
+const InstagramFetch = ({ postId }: { postId: string }) => {
   const [isClient, setIsClient] = useState(false);
   useEffect(() => {
     setIsClient(true);
@@ -15,7 +15,6 @@ const InstagramFetch = ({ postId, fullDate }: { postId: string, fullDate: string
 
   return (
     <div>
-      <h1>{fullDate}</h1>
       <blockquote
         className="instagram-media bg-white border border-transparent rounded shadow-sm m-px max-w-[540px] min-w-[326px] w-[calc(100%-2px)]"
         data-instgrm-captioned
@@ -106,7 +105,6 @@ const InstagramFetch = ({ postId, fullDate }: { postId: string, fullDate: string
       </blockquote>
       {/* <script async src="//www.instagram.com/embed.js"></script> */}
     </div>
-    
   );
 };
 
