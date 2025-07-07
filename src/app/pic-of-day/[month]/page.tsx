@@ -7,42 +7,28 @@ import { useParams, useRouter } from "next/navigation";
 import { Calendar } from "@/components/ui/calendar";
 
 const Page = () => {
-
-  
-
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
-  // const [monthTracker, setMonthTracker] = useState<number | undefined>(date?.getMonth() + 1);
   const params = useParams();
-  // console.log(params.month)
-  
-  const month = JSON.parse(params.month);
-  console.log(typeof(month))
-  // const [month, setMonth] = useState<number|undefined>(JSON.parse(localStorage.getItem("month")) || currentDate.getMonth()+1)
-  
-  // const [year, setYear] = useState<number|undefined>(currentDate.getFullYear())
+  const selectedDate = new Date(params.month as string);
+  const [date, setDate] = React.useState<Date | undefined>(selectedDate);
+
   const [isAdding, setIsAdding] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    const formattedDate = date?.toISOString().slice(0, 10);
-    router.push(`/pic-of-day/${date?.getMonth()+1}`)
-    // setMonth(date?.getMonth()+1)
-    // setYear(date?.getFullYear())
-    console.log(formattedDate, month)
-  }, [month])
-
-
-
-  // const getDaysDifference = () => {
-  //   if (!date) return 0;
-  //   const diffInMs = Math.abs(date.getTime() - currentDate.getTime());
-  //   return Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-  // };
+    // if(date == new Date()){
+    //   return
+    // }
+    if (date?.getMonth() + 1 != selectedDate.getMonth() + 1) {
+      const formattedDate = `${date.getFullYear()}-${String(
+        date.getMonth() + 1
+      ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+      router.push(`/pic-of-day/${formattedDate}`);
+    }
+  }, [date]);
 
   console.log(date);
 
   useEffect(() => {
-
     // Check if page has already been reloaded
     const hasReloaded = sessionStorage.getItem("pageReloaded");
 
@@ -58,10 +44,6 @@ const Page = () => {
     };
   }, []);
 
-  // const [postId, setPostID] = useState("DKH6-sxBx0L");
-  // const params = useParams();
-  // const [postId] = useState(params.postid as string);
-
   const [postId, setPostID] = useState([]);
 
   useEffect(() => {
@@ -74,13 +56,12 @@ const Page = () => {
           .split("\n")
           .map((line) => line.trim())
           .filter(Boolean);
-        
-        const data = buffer.map((e) => 
-          e.split(","))
+
+        const data = buffer.map((e) => e.split(","));
         // const ids = data.map((row) => row[0]);
         setPostID(data);
 
-        console.log(data)
+        console.log(data);
       });
   }, []);
 
@@ -120,7 +101,11 @@ const Page = () => {
       )}
       <div className="grid grid-cols-4 gap-0">
         {postId.map((post, index) => {
-          return (post[1].split("-")[1] == month)? <div className="bg-red-200 border-2 border-s-orange-200"><InstagramFetch postId={post[0]} key={index} fullDate={post[1]} /></div>: null;
+          return post[1].split("-")[1] == selectedDate.getMonth() + 1 ? (
+            <div className="bg-red-200 border-2 border-s-orange-200">
+              <InstagramFetch postId={post[0]} key={index} fullDate={post[1]} />
+            </div>
+          ) : null;
         })}
       </div>
     </div>

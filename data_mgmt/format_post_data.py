@@ -28,6 +28,8 @@ with open("D:\DOWNLOADS\extract-insta-posts.csv", mode="r") as file:
 fileData = []
 prev_date = None
 
+database_path = "../public/database.csv"
+
 try:
     os.remove("D:\DOWNLOADS\extract-insta-posts.csv")
 except FileNotFoundError:
@@ -35,29 +37,29 @@ except FileNotFoundError:
 except Exception as e:
     print(f"Error deleting file: {e}")
 
-    
-with open("../public/database.csv", mode='r') as file:
-    
-    csv_data = csv.reader(file)
-    first_row = next(csv_data)
-    prev_date_str = first_row[1]
+if os.path.exists(database_path):
+    with open(database_path, mode='r') as file:
+        csv_data = csv.reader(file)
+        first_row = next(csv_data)
+        prev_date_str = first_row[1]
 
-    try:
-        prev_date = datetime.datetime.strptime(prev_date_str, '%Y-%m-%d').date()
-    except ValueError:
         try:
-            prev_date = datetime.datetime.strptime(prev_date_str, '%m/%d/%Y').date()
+            prev_date = datetime.datetime.strptime(prev_date_str, '%Y-%m-%d').date()
         except ValueError:
-            print(f"Could not parse date: {prev_date_str}")
-            prev_date = datetime.date.today()
+            try:
+                prev_date = datetime.datetime.strptime(prev_date_str, '%m/%d/%Y').date()
+            except ValueError:
+                print(f"Could not parse date: {prev_date_str}")
+                prev_date = datetime.date(2025, 5, 25)
 
-    # print(f"Previous date: {prev_date} (type: {type(prev_date)})")
-    
-    fileData.append(first_row)
-    for row in csv_data:
-        fileData.append(row)
-        
-   
+        # print(f"Previous date: {prev_date} (type: {type(prev_date)})")
+        fileData.append(first_row)
+        for row in csv_data:
+            fileData.append(row)
+else:
+    print(f"{database_path} does not exist. Skipping reading.")
+    prev_date = datetime.date(2025, 5, 25)
+    print(prev_date)
     
 
 with open("../public/database.csv", mode='w') as file:
