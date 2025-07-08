@@ -2,15 +2,23 @@
 
 import Circles from "@/components/circles";
 import Navbar from "@/components/navbar";
-import WeeklyReadme from "@/components/weeklyReadme";
-import { useState } from "react";
+import WeeklyJournal from "@/components/weeklyJournal";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
-  const [currentWeek, setCurrentWeek] = useState<number>(() => {
+  const [currentWeek, setCurrentWeek] = useState<number>(0)
+
+  useEffect(() => {
     const storedValue = localStorage.getItem("currentWeek");
-    return storedValue ? JSON.parse(storedValue) : 1;
-  });
+    if (storedValue) {
+      try {
+        setCurrentWeek(JSON.parse(storedValue));
+      } catch {
+        setCurrentWeek(1);
+      }
+    }
+  }, []);
 
   return (
     <div>
@@ -21,7 +29,7 @@ export default function Home() {
         currentWeek={currentWeek}
         setCurrentWeek={setCurrentWeek}
       />
-      <WeeklyReadme selectedWeek={selectedWeek} />
+      <WeeklyJournal selectedWeek={selectedWeek} />
     </div>
   );
 }

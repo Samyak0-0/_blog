@@ -26,8 +26,10 @@ const Circles = ({
 
   // Hide context menu on click elsewhere
   useEffect(() => {
-    const handleClick = () =>
+    const handleClick = () => {
       setContextMenu({ ...contextMenu, visible: false });
+      localStorage.setItem("currentWeek", JSON.stringify(contextMenu.week));
+    };
     window.addEventListener("click", handleClick);
     return () => window.removeEventListener("click", handleClick);
   }, [contextMenu]);
@@ -40,8 +42,7 @@ const Circles = ({
           <div
             key={week}
             onClick={() => {
-                localStorage.setItem("currentWeek", JSON.stringify(week))
-                setSelectedWeek(week == selectedWeek? null : week)
+              setSelectedWeek(week == selectedWeek ? null : week);
             }}
             onContextMenu={(e) => {
               e.preventDefault();
@@ -65,15 +66,25 @@ const Circles = ({
               height: "100%",
               aspectRatio: "1/1",
               borderRadius: "50%",
-              
+
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               fontWeight: "bold",
               cursor: "pointer",
               userSelect: "none",
-              WebkitTextStrokeWidth: week==selectedWeek? "0px" : week == currentWeek? "1px":"1px",
-              WebkitTextStrokeColor: week==selectedWeek? "black" : week == currentWeek? "#188c80" :"black"
+              WebkitTextStrokeWidth:
+                week == selectedWeek
+                  ? "0px"
+                  : week == currentWeek
+                  ? "1px"
+                  : "1px",
+              WebkitTextStrokeColor:
+                week == selectedWeek
+                  ? "black"
+                  : week == currentWeek
+                  ? "#188c80"
+                  : "black",
             }}
             // backgroundColor:
             //     selectedWeek === week
